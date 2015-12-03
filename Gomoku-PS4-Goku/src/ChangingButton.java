@@ -13,7 +13,7 @@ import javax.swing.JButton;
  *
  * @author aodyra
  */
-public class ChangingButton extends JButton {
+public class ChangingButton extends java.awt.Button {
 
     private final int[][] fModel;
     private final int fX;
@@ -23,18 +23,19 @@ public class ChangingButton extends JButton {
         fX= x;
         fY= y;
         fModel= model;
-
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                fModel[fX][fY] = fModel[fX][fY] == 1 ? 0 : 1;
-                updateNameFromModel();
+                if(fModel[fX][fY] == 0) {
+                    fModel[fX][fY] = 1;
+                    updateNameFromModel();
+                }
             }
         });
         updateNameFromModel();
     }
 
     private void updateNameFromModel() {
-        setText(String.valueOf(fModel[fX][fY]));
+        setLabel(String.valueOf(fModel[fX][fY]));
     }
 
 }
