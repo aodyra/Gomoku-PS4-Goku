@@ -5,6 +5,7 @@
  */
 package Server;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -12,7 +13,8 @@ import java.util.Map;
  *
  * @author Wiwit
  */
-public class Room {
+public class Room implements Serializable {
+	private static int[] dx = {0, 1, 1, 1}, dy = {-1, -1, 0, 1};
 	private int _noRoom;
     private User _createdBy;
     private int[][] _board;
@@ -20,6 +22,7 @@ public class Room {
     private int _turn;
     private ArrayList< User > _spectator;
     private ArrayList< String > _chat;
+    private boolean _started;  
     /**
      * Constructor
      */
@@ -34,6 +37,8 @@ public class Room {
     	_turn = 0;
     	_spectator = new ArrayList<User>();
     	_chat = new ArrayList<String>();
+    	addUser(createdBy);
+    	_started = false;
     }
 	/**
 	 * @return the _createdBy
@@ -123,12 +128,35 @@ public class Room {
 	public void removeUser(int id) {
 		this._user.get(id).setIsActive(false);
 	}
-	public boolean putPawn(String UserName, int x, int y) {
-//		int id = 
-//		if(x <20 && x >= 0 && y < 20 && y >= 0 && this._board[x][y] == -1) {
-//			this._board[x][y] = 
-//			
-//		}
+	public void addSpectator(User spect) {
+		spect.setRoom(this._noRoom);
+		spect.setNoTurn(-1);
+		_spectator.add(spect);
+	}
+	public boolean putPawn(int noTurn, int x, int y) { 
+		if(x <20 && x >= 0 && y < 20 && y >= 0 && this._board[x][y] == -1) {
+			for(int i = 0; i<4; i++) {
+				int x1, y1, x2, y2;
+				x2 = x1 = x; y2 = y1 = y;
+				while(x1 >= 0 && x1 < 20 && y1 >= 0 && y1 < 20 && this._board[x1][y1] == noTurn) {
+					x1 += dx[i];
+					y1 += dy[i];
+				}
+				while(x2 >= 0 && x2 < 20 && y2 >= 0 && y2 < 20 && this._board[x2][y2] == noTurn) {
+					x2 += dx[i];
+					y2 += dy[i];
+				}
+				int dist = Math.max(Math.abs(x1-x2), Math.abs(y1-y2));
+				if(dist > 5)
+					return true;
+			}
+		}
 		return false;
+	}
+	public boolean getStarted() {
+		return this._started;
+	}
+	public void setStarted() {
+		this._started = true;
 	}
 }

@@ -31,10 +31,10 @@ public class UserReceiver implements Runnable {
 			}
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 

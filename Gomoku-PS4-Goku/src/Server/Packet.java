@@ -11,6 +11,7 @@ import java.io.Serializable;
  *
  */
 public class Packet implements Serializable {
+	public static final int REGISTER = 0;
 	public static final int CREATE_ROOM = 1;
 	public static final int JOIN_ROOM = 2;
 	public static final int WATCH_ROOM = 3;
