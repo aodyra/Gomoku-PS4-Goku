@@ -25,8 +25,10 @@ public class UserRegister implements Runnable {
 		Socket clientSock = null;
 		try {
 			while((clientSock = sock.accept()) != null) {
+                            System.out.println("masuk");
 				ObjectInputStream in = new ObjectInputStream(clientSock.getInputStream());
-				Packet packet = (Packet)in.readObject(); 
+                                System.out.println("weleh");
+				Packet packet = (Packet)in.readObject();
 				String name = packet.getUserName();
 				System.err.println(name + " Connecting..");
 				if(userMap.containsKey(name)) {

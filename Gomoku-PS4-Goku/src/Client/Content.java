@@ -5,6 +5,7 @@
  */
 package Client;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,46 +15,42 @@ import java.util.Map;
  * @author aodyra
  */
 public class Content {
-    private ArrayList<String> userInRoom;
+    private ArrayList<String> userPlayer;
     private ArrayList<String> userWatch;
     private ArrayList<String> chatRoom;
-    private ArrayList<String> userWaiting;
     private ArrayList<String> listRoom;
     private int noroom;
     private String username;
+    private Gomoku gomoku;
+    private int urutan;
     
-    public Content() {
-        userInRoom = new ArrayList<String>();
+    public Content(String hostname, int port) throws IOException {
+        userPlayer = new ArrayList<String>();
         userWatch = new ArrayList<String>();
         chatRoom = new ArrayList<String>();
-        userWaiting = new ArrayList<String>();
         listRoom = new ArrayList<String>();
+        gomoku = new Gomoku(hostname, port);
     }
     
     public void addUserWatch(String username){
         getUserWatch().add(username);
+        gomoku.updateUserWaitingWatch(userWatch);
+        gomoku.updateUserRoomWatch(userWatch);
     }
     
-    public void addUserInRoom(String username){
-        getUserInRoom().add(username);
-    }
-    
-    public void addUserWaiting(String username){
-        getUserWaiting().add(username);
+    public void addUserPlayer(String username){
+        getUserPlayer().add(username);
+        gomoku.updateUserWaitingPlayer(userPlayer);
+        gomoku.updateUserRoomPlayer(userPlayer);
     }
     
     public void addChatRoom(String chat){
-        getChatRoom().add(chat);
+        gomoku.updateChat(chat);
     }
     
     public void addListRoom(String room){
         getListRoom().add(room);
-    }
-    /**
-     * @return the userInRoom
-     */
-    public ArrayList<String> getUserInRoom() {
-        return userInRoom;
+        gomoku.updateListRoom(listRoom);
     }
 
     /**
@@ -68,13 +65,6 @@ public class Content {
      */
     public ArrayList<String> getChatRoom() {
         return chatRoom;
-    }
-
-    /**
-     * @return the userWaiting
-     */
-    public ArrayList<String> getUserWaiting() {
-        return userWaiting;
     }
 
     /**
@@ -103,20 +93,9 @@ public class Content {
      */
     public void setListRoom(ArrayList<String> listRoom) {
         this.listRoom = listRoom;
-    }
-
-    /**
-     * @param userWaiting the userWaiting to set
-     */
-    public void setUserWaiting(ArrayList<String> userWaiting) {
-        this.userWaiting = userWaiting;
-    }
-
-    /**
-     * @param userInRoom the userInRoom to set
-     */
-    public void setUserInRoom(ArrayList<String> userInRoom) {
-        this.userInRoom = userInRoom;
+        urutan = listRoom.indexOf(username);
+        gomoku.updateListRoom(listRoom);
+        gomoku.setUrutanuser(urutan);
     }
 
     /**
@@ -124,6 +103,8 @@ public class Content {
      */
     public void setUserWatch(ArrayList<String> userWatch) {
         this.userWatch = userWatch;
+        gomoku.updateUserWaitingWatch(userWatch);
+        gomoku.updateUserRoomWatch(userWatch);
     }
 
     /**
@@ -139,6 +120,49 @@ public class Content {
     public void setNoroom(int noroom) {
         this.noroom = noroom;
     }
+
+    /**
+     * @return the userPlayer
+     */
+    public ArrayList<String> getUserPlayer() {
+        return userPlayer;
+    }
+
+    /**
+     * @param userPlayer the userPlayer to set
+     */
+    public void setUserPlayer(ArrayList<String> userPlayer) throws IOException {
+        this.userPlayer = userPlayer;
+        gomoku.updateUserWaitingPlayer(userPlayer);
+        gomoku.updateUserRoomPlayer(userPlayer);
+        gomoku.createGridMatrix();
+    }
     
+    public void toLobby(){
+        gomoku.toLobby();
+    }
     
+    public void toWaitingRoom(){
+        gomoku.toWaitingRoom();
+    }
+    
+    public void toRoom(){
+        gomoku.toRoom();
+    }
+    
+    public void toHome(){
+        gomoku.toHome();
+    }
+    
+    public void setMatrix(int noturn,int x, int y){
+        gomoku.updateMatrix(noturn, x, y);
+    }
+    
+    public void alert(){
+        gomoku.alertNickNameAlready();
+    }
+    
+    public void changeStatusBoard(boolean status){
+        gomoku.changeStatusplayer(status);
+    }
 }

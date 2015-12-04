@@ -5,9 +5,7 @@
  */
 package Client;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
@@ -18,7 +16,7 @@ import Server.Packet;
 
 /**
  *
- * @author Wiwit
+ * @author aodyra
  */
 public class ServerTester {
 
@@ -28,67 +26,62 @@ public class ServerTester {
     public static void main(String[] args) {
     	String hostname = args[0];
     	int port = Integer.parseInt(args[1]);
-    	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     	try {
-			String name = br.readLine();
-			
-			System.out.println("Hello " + name);
-			System.out.flush();
 			Socket sock = new Socket(hostname, port);
 			System.out.println("Socket connected");
 			ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
 			System.out.println("Output Stream");
-			Packet pname = new Packet(0, name);
-			out.writeObject(pname);
+			Packet name = new Packet(0, "Wiwit");
+			System.out.println("jancuk");
+			out.writeObject(name);
 
 			ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
 			System.out.println("Input Stream");
 
 			Packet p = (Packet)in.readObject();
-			System.err.println(p);
+			System.err.println("Type =" + p.getType() + "\n Name : " + p.getUserName() + " List Room : " + p.getArrayString());
 			
 			// Create Room
-			int noRoom = br.read();
-			Packet pa = new Packet(Packet.CREATE_ROOM, name);
+			Packet pa = new Packet(1, "Wiwit");
 			pa.setMessage("Helloo World!");
-			pa.setRoom(noRoom-1);
+			pa.setRoom(8);
 
-			System.out.println(pa);
+			System.out.println(" Type : " + pa.getType() + "\n Name : " + pa.getUserName()+ "\n Room : " + pa.getRoom() + "\n message : " + pa.getMessage() + "\n");
 			out.writeObject(pa);
 			Packet res = (Packet)in.readObject();
-			System.err.println(res);
+			System.err.println(" Type : " + res.getType() + "\n Name : " + res.getUserName()+ "\n Room : " + res.getRoom() + "\n message : " + res.getMessage() + "\n User : "+res.getArrayString() + "\n Spectator : "+res.getArrayString2());
 			
 			// Join Room
-//			pa = new Packet(Packet.JOIN_ROOM, name);
-//			pa.setMessage("Helloo World!");
-//			pa.setRoom(noRoom);
-//
-//			System.out.println(pa);
-//			out.writeObject(pa);
-//			res = (Packet)in.readObject();
-//			System.err.println(res);
+			pa = new Packet(Packet.JOIN_ROOM, "Wiwit");
+			pa.setMessage("Helloo World!");
+			pa.setRoom(9);
+
+			System.out.println(" Type : " + pa.getType() + "\n Name : " + pa.getUserName()+ "\n Room : " + pa.getRoom() + "\n message : " + pa.getMessage() + "\n");
+			out.writeObject(pa);
+			res = (Packet)in.readObject();
+			System.err.println(" Type : " + res.getType() + "\n Name : " + res.getUserName()+ "\n Room : " + res.getRoom() + "\n message : " + res.getMessage() + "\n User : "+res.getArrayString() + "\n Spectator : "+res.getArrayString2());
 			
 			// Watch Room
-			pa = new Packet(Packet.WATCH_ROOM, name);
+			pa = new Packet(Packet.WATCH_ROOM, "Wiwit");
 			pa.setMessage("Helloo World!");
-			pa.setRoom(noRoom);
+			pa.setRoom(9);
 
-			System.out.println(pa);
+			System.out.println(" Type : " + pa.getType() + "\n Name : " + pa.getUserName()+ "\n Room : " + pa.getRoom() + "\n message : " + pa.getMessage() + "\n");
 			out.writeObject(pa);
 			res = (Packet)in.readObject();
-			System.err.println(res);			
+			System.err.println(" Type : " + res.getType() + "\n Name : " + res.getUserName()+ "\n Room : " + res.getRoom() + "\n message : " + res.getMessage() + "\n User : "+res.getArrayString() + "\n Spectator : "+res.getArrayString2());			
 			
 			// Start Game
-			pa = new Packet(Packet.START_GAME, name);
+			pa = new Packet(Packet.START_GAME, "Wiwit");
 			pa.setMessage("Helloo World!");
-			pa.setRoom(noRoom);
+			pa.setRoom(8);
 
-			System.out.println(pa);
+			System.out.println(" Type : " + pa.getType() + "\n Name : " + pa.getUserName()+ "\n Room : " + pa.getRoom() + "\n message : " + pa.getMessage() + "\n");
 			out.writeObject(pa);
 			res = (Packet)in.readObject();
-			System.err.println(res);			
+			System.err.println(" Type : " + res.getType() + "\n Name : " + res.getUserName()+ "\n Room : " + res.getRoom() + "\n message : " + res.getMessage() + "\n User : "+res.getArrayString() + "\n Spectator : "+res.getArrayString2());			
 			while((res = (Packet)in.readObject()) != null) {
-				System.err.println(res);
+				System.err.println(" Type : " + res.getType() + "\n Name : " + res.getUserName()+ "\n Room : " + res.getRoom() + "\n message : " + res.getMessage() + "\n User : "+res.getArrayString() + "\n Spectator : "+res.getArrayString2());
 			}
 			
 			out.close();

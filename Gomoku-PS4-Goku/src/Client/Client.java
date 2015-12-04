@@ -37,55 +37,141 @@ public class Client {
     	try {
                 BlockingQueue<Packet> bque = (BlockingQueue<Packet>) new LinkedBlockingQueue();
                 Socket sock = new Socket(hostname,port);
-                Content content = new Content();
+                Content content = new Content(hostname,port);
                 ToClientFromServer rev = new ToClientFromServer(sock,bque);
                 Thread th = new Thread(rev);
                 th.start();
                 while(true){
                     Packet p = (Packet) bque.take();
+                    
                     switch(p.getType()){
                         case Packet.REGISTER :
-                                if (p.getUserName() == content.getUsername()){
-                                    
-//                                    content.setListRoom(p.get);
+                                if (p.getUserName().equals(content.getUsername())){
+                                    if(p.getRoom() == 1) {
+                                        // TODO
+                                        // toLobby and update list room
+                                        content.setListRoom(p.getArrayString());
+                                        content.toLobby();
+                                    }
+                                    else  {
+                                        // TODO
+                                        // alert multiple userName
+                                        content.alert();
+                                    }
                                 }
                                 break;
                         case Packet.CREATE_ROOM :
-                                if (p.getUserName() == content.getUsername()){
-//                                    content.setUserWaiting(p.get);
-                                } else {
-                                    content.addListRoom(p.getUserName());
+                                if (p.getUserName().equals(content.getUsername())){
+                                    if(p.getRoom() == 1) {
+                                        // TODO
+                                        // add this room [p.getRoom()] to room list
+                                        content.setListRoom(p.getArrayString());
+                                    }
+                                    else {
+                                        // TODO
+                                        // Alert cannot create room
+                                    }
                                 }
                                 break;
                         case Packet.JOIN_ROOM :
-                                if(p.getUserName() == content.getUsername()){
-//                                    content.setUserWaiting(p.get);
-                                } else {
-                                    content.addUserWaiting(p.getUserName());
+                                if(p.getUserName().equals(content.getUsername())){
+                                    if(p.getRoom() >= 0) {
+                                        // TODO
+                                        // set room = p.getRoom()
+                                        // This client join this room
+                                        // to WAITING ROOM and update list user = p.getArrayString() and list spectator = p.getArrayString2()
+                                        content.setUserPlayer(p.getArrayString());
+                                        content.setUserWatch(p.getArrayString2());
+                                        content.toWaitingRoom();
+                                    }
+                                    else {
+                                        // TODO
+                                        // Alert cannot join room
+                                    }
                                 }
                                 break;
                         case Packet.WATCH_ROOM :
-                                if(p.getUserName() == content.getUsername()){
-//                                    content.setUserInRoom(p.get);
-//                                    content.setUserWatch(p.get);
-                                } else {
-                                    content.addUserWatch(p.getUserName());
+                                if(p.getUserName().equals(content.getUsername())){
+                                    if(p.getRoom() >= 0) {
+                                        // TODO
+                                        // set room = p.getRoom()
+                                        // This client watch this room
+                                        // to WAITING ROOM and update list user = p.getArrayString() and list spectator = p.getArrayString2()
+                                        content.setUserPlayer(p.getArrayString());
+                                        content.setUserWatch(p.getArrayString2());
+                                        content.toWaitingRoom();
+                                    }
+                                    else {
+                                        // TODO
+                                        // Alert cannot join room
+                                    }
                                 }
                                 break;
                         case Packet.START_GAME :
+                                if(p.getUserName().equals(content.getUsername())) {
+                                    if(p.getRoom() >= 0) {
+                                        // TODO
+                                        // set status game to PLAY
+                                        // to ROOM
+                                        
+                                        content.toRoom();
+                                    }
+                                    else{
+                                        // Cannot start
+                                    }
+                                }
                                 
                                 break;
                         case Packet.PUT_PAWN :
-                                
+                                if(p.getUserName().equals(content.getUsername())) {
+                                    if(p.getRoom() >= 0) {
+                                        if(p.getTurn() < 0) {
+                                            // TODO
+                                            // Notify that this is your move
+                                            // make client can to select position
+                                            content.changeStatusBoard(true);
+                                        }
+                                        else {
+                                            // TODO
+                                            // set matrix p.getPosX() and p.getPosY() to p.getTurn();
+                                            content.changeStatusBoard(false);
+                                            content.setMatrix(p.getTurn(), p.getPosX(), p.getPosY());
+                                        }
+                                    }
+                                    else{
+                                        // Cannot put pawn
+                                    }
+                                }
                                 break;
                         case Packet.SEND_CHAT :
-                                if(p.getUserName() != content.getUsername()){
-                                    content.addChatRoom(p.getMessage());
+                                if(p.getUserName().equals(content.getUsername())){
+                                    if(p.getRoom() >= 0) {
+                                        // TODO
+                                        // Add p.getMessage() to chat box
+                                        content.addChatRoom(p.getMessage());
+                                    }
+                                    else {
+                                        // cannot update chat
+                                    }
                                 }
                                 break;
                         case Packet.USER_DISCONNECT :
-                                content.getUserInRoom().remove(p.getUserName());
+                                if(p.getUserName().equals(content.getUsername()) && p.getRoom() >= 0){
+                                    if(p.getTurn() >= 0) {
+                                        // TODO
+                                        // mark user as disconnect that hi turn is p.getTurn()
+                                    }
+                                    else {
+                                        // TODO
+                                        // remove or mark spectator that his name is p.getUserName()
+                                    }
+                                }
                                 break;
+                        case Packet.FINISH :
+                            if(p.getUserName().equals(content.getUsername()) && p.getRoom() >= 0){
+                                // notify that the winner is player in turn p.getTurn();
+                                // then back to lobby
+                            }
                     }
                 }
                 
