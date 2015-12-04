@@ -37,7 +37,7 @@ public class Client {
     	try {
                 BlockingQueue<Packet> bque = (BlockingQueue<Packet>) new LinkedBlockingQueue();
                 Socket sock = new Socket(hostname,port);
-                Content content = new Content(hostname,port);
+                Content content = new Content(sock);
                 ToClientFromServer rev = new ToClientFromServer(sock,bque);
                 Thread th = new Thread(rev);
                 th.start();
@@ -46,21 +46,21 @@ public class Client {
                     
                     switch(p.getType()){
                         case Packet.REGISTER :
-                                if (p.getUserName().equals(content.getUsername())){
-                                    if(p.getRoom() == 1) {
-                                        // TODO
-                                        // toLobby and update list room
-                                        content.setListRoom(p.getArrayString());
-                                        content.toLobby();
-                                    }
-                                    else  {
-                                        // TODO
-                                        // alert multiple userName
-                                        content.alert();
-                                    }
-                                }
-                                break;
+                        	System.out.println("REGISTER :\n" + p);
+                            if(p.getRoom() == 1) {
+                            	content.setUsername(p.getUserName());
+                                content.setListRoom(p.getArrayString());
+                                content.toLobby();
+                            }
+                            else  {
+                                // TODO
+                                // alert multiple userName
+                                content.alert();
+                            }
+
+                            break;
                         case Packet.CREATE_ROOM :
+                        	System.out.println("CREATE_ROOM :\n" + p);
                                 if (p.getUserName().equals(content.getUsername())){
                                     if(p.getRoom() == 1) {
                                         // TODO
@@ -80,6 +80,7 @@ public class Client {
                                         // set room = p.getRoom()
                                         // This client join this room
                                         // to WAITING ROOM and update list user = p.getArrayString() and list spectator = p.getArrayString2()
+                                        content.setNoroom(p.getRoom());
                                         content.setUserPlayer(p.getArrayString());
                                         content.setUserWatch(p.getArrayString2());
                                         content.toWaitingRoom();

@@ -33,19 +33,14 @@ public class Gomoku extends javax.swing.JFrame {
     private String username;
     private int noroom;
     private int urutanuser;
-    static String hostname;
-    static int port;
     /**
      * Creates new form Gomoku
      */
-    public Gomoku(String hostname, int port) throws IOException {
-        this.hostname = hostname;
-        this.port = port;
-        System.out.println("cukcukcuk");
-        sock = new Socket(hostname, port);
-        System.out.println("jaljfaljlf");
-        oos = new ObjectOutputStream(sock.getOutputStream());
-        System.out.println("jgal jalgjaljafmnabf");
+    public Gomoku(Socket sock) throws IOException {
+        this.sock = sock;
+        noroom = -1;
+        urutanuser = -1;
+        oos = new ObjectOutputStream(this.sock.getOutputStream());
         initComponents();
         buttons = new HashMap<Integer,ArrayList<ChangingButton>>();
         for(int i = 0; i < dim; i++){
@@ -53,6 +48,9 @@ public class Gomoku extends javax.swing.JFrame {
             buttons.put(new Integer(i),temp);
         }
         begin();
+        for(int i = 0; i < dim; i++)
+        	for(int j = 0; j<dim; j++)
+        		matrix[i][j] = -1;
     }
 
     /**
@@ -399,28 +397,27 @@ public class Gomoku extends javax.swing.JFrame {
         // TODO add your handling code here:
         // Button Start Game
         username = textField1.getText();
-        System.out.println(username);
         submitName(textField1.getText());
-        System.out.println(username);
     }//GEN-LAST:event_button5ActionPerformed
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
         // TODO add your handling code here:
         // Create Room
-        
+        createRoom(username);
     }//GEN-LAST:event_button1ActionPerformed
 
     private void button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button3ActionPerformed
         // TODO add your handling code here:
+    	noroom = new Integer(jComboBox1.getItemAt(jComboBox1.getSelectedIndex()));
         // Join Room
-        noroom = new Integer(jComboBox1.getItemAt(jComboBox1.getSelectedIndex()));
         joinRoom(noroom, username);
     }//GEN-LAST:event_button3ActionPerformed
 
     private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
         // TODO add your handling code here:
         button3.setEnabled(false);
-        noroom = new Integer(jComboBox1.getItemAt(jComboBox1.getSelectedIndex()));
+        button4.setEnabled(false);
+        noroom = new  Integer(jComboBox1.getItemAt(jComboBox1.getSelectedIndex()));
         watchRoom(noroom, username);
     }//GEN-LAST:event_button2ActionPerformed
 
@@ -464,15 +461,15 @@ public class Gomoku extends javax.swing.JFrame {
         //</editor-fold>
         
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new Gomoku(hostname, port).setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(Gomoku.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                try {to
+////                    new Gomoku(sock).setVisible(true);
+//                } catch (IOException ex) {
+//                    Logger.getLogger(Gomoku.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -521,9 +518,10 @@ public class Gomoku extends javax.swing.JFrame {
     }
     
     public void createGridMatrix() throws IOException{
+    	Status sbool = new Status(false);
         for(int i = 0; i < 20; i++){
             for(int j = 0; j < 20; j++){
-                ChangingButton button = new ChangingButton(i, j, matrix, hostname, port, getUrutanuser(), noroom, username);
+                ChangingButton button = new ChangingButton(i, j, matrix, oos, getUrutanuser(), noroom, username, sbool);
                 buttons.get(i).add(button);
                 jPanel1.add(button);
             }
@@ -531,7 +529,6 @@ public class Gomoku extends javax.swing.JFrame {
     }
     
     private void begin(){
-        System.out.println("jancuk");
         setVisible(true);
         room.setVisible(false);
         lobby.setVisible(false);
@@ -582,6 +579,7 @@ public class Gomoku extends javax.swing.JFrame {
         }
     }
     public void toLobby(){
+    	System.out.println("Gomoku.toLobby");
         lobby.setVisible(true);
         home.setVisible(false);
         waitingroom.setVisible(false);
@@ -595,10 +593,11 @@ public class Gomoku extends javax.swing.JFrame {
         room.setVisible(false);
     }
     
-    public void toRoom(){
+    public void toRoom() throws IOException{
         lobby.setVisible(false);
         home.setVisible(false);
         waitingroom.setVisible(false);
+        this.createGridMatrix();
         room.setVisible(true);
     }
     
@@ -618,9 +617,9 @@ public class Gomoku extends javax.swing.JFrame {
         }
     }
 
-    void createRoom(int noRoom, String name) {
+    void createRoom(String name) {
         Packet packet = new Packet(Packet.CREATE_ROOM, name);
-        packet.setRoom(noRoom);
+        packet.setRoom(-1);
         try {
             oos.writeObject(packet);
         } catch (IOException ex) {
@@ -630,6 +629,7 @@ public class Gomoku extends javax.swing.JFrame {
     void joinRoom(int noRoom, String name) {
         Packet packet = new Packet(Packet.JOIN_ROOM, name);
         packet.setRoom(noRoom);
+        System.err.println(packet);
         try {
             oos.writeObject(packet);
         } catch (IOException ex) {
@@ -699,5 +699,18 @@ public class Gomoku extends javax.swing.JFrame {
             }
         }
     }
-}
 
+	/**
+	 * @return the noroom
+	 */
+	public int getNoroom() {
+		return noroom;
+	}
+
+	/**
+	 * @param noroom the noroom to set
+	 */
+	public void setNoroom(int noroom) {
+		this.noroom = noroom;
+	}
+}

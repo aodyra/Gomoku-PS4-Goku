@@ -29,13 +29,13 @@ public class ChangingButton extends java.awt.Button {
     private final int fY;
     private Socket sock;
     private ObjectOutputStream oos;
-    private boolean status;
+    private Status status;
     
     
-    public ChangingButton(final int x, final int y, final int[][] model,String hostname, int port, int urutan, int noroom, String username) throws IOException {
-        sock = new Socket(hostname, port);
-        oos = new ObjectOutputStream(sock.getOutputStream());
-        status = false;
+    public ChangingButton(final int x, final int y, final int[][] model, ObjectOutputStream oos, int urutan, int noroom, String username, Status status) throws IOException {
+        
+        this.oos = oos;
+        this.status = status;
         fX= x;
         fY= y;
         fModel= model;
@@ -44,29 +44,28 @@ public class ChangingButton extends java.awt.Button {
                 if(!isStatus()){
                     return;
                 }
-                if(fModel[fX][fY] == 0) {
+                if(fModel[fX][fY] == -1) {
                     fModel[fX][fY] = urutan;
-                    putPawn(noroom, username, x, y);
-                    updateNameFromModel();
+                    putPawn(noroom, username, fX, fY);
                 }
+                setStatus(false);
             }
         });
-        updateNameFromModel();
     }
     
     private char simbol(int k){
         switch(k){
-            case 1: return 'X';
-            case 2: return 'O';
-            case 3: return (char) 0x25A0;
-            case 4: return (char) 0x03A6;
-            case 5: return (char) 0x03C9;
+            case 0: return 'X';
+            case 1: return 'O';
+            case 2: return (char) 0x25A0;
+            case 3: return (char) 0x03A6;
+            case 4: return (char) 0x03C9;
         }
         return (char)0;
     }
     public void updateNameFromModel() {
         setLabel(String.valueOf(simbol(fModel[fX][fY])));
-        if(fModel[fX][fY] != 0) {
+        if(fModel[fX][fY] != -1) {
             setEnabled(false);
             setBackground(Color.ORANGE);
         }
@@ -88,14 +87,14 @@ public class ChangingButton extends java.awt.Button {
      * @return the status
      */
     public boolean isStatus() {
-        return status;
+        return status.get();
     }
 
     /**
      * @param status the status to set
      */
     public void setStatus(boolean status) {
-        this.status = status;
+        this.status.set(status);
     }
 
 }

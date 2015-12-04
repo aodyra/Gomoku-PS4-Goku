@@ -6,6 +6,7 @@
 package Client;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,12 +25,15 @@ public class Content {
     private Gomoku gomoku;
     private int urutan;
     
-    public Content(String hostname, int port) throws IOException {
+    public Content(Socket sock) throws IOException {
         userPlayer = new ArrayList<String>();
         userWatch = new ArrayList<String>();
         chatRoom = new ArrayList<String>();
         listRoom = new ArrayList<String>();
-        gomoku = new Gomoku(hostname, port);
+        gomoku = new Gomoku(sock);
+        noroom = -1;
+        username = "";
+        urutan = -1;
     }
     
     public void addUserWatch(String username){
@@ -79,6 +83,7 @@ public class Content {
      */
     public void setUsername(String username) {
         this.username = username;
+        gomoku.setName(username);
     }
 
     /**
@@ -119,6 +124,7 @@ public class Content {
      */
     public void setNoroom(int noroom) {
         this.noroom = noroom;
+        gomoku.setNoroom(noroom);
     }
 
     /**
@@ -135,10 +141,10 @@ public class Content {
         this.userPlayer = userPlayer;
         gomoku.updateUserWaitingPlayer(userPlayer);
         gomoku.updateUserRoomPlayer(userPlayer);
-        gomoku.createGridMatrix();
     }
     
     public void toLobby(){
+    	System.err.println("toLobby");
         gomoku.toLobby();
     }
     
@@ -146,7 +152,7 @@ public class Content {
         gomoku.toWaitingRoom();
     }
     
-    public void toRoom(){
+    public void toRoom() throws IOException{
         gomoku.toRoom();
     }
     

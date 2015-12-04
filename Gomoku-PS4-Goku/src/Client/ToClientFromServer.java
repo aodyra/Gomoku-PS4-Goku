@@ -33,6 +33,7 @@ public class ToClientFromServer implements Runnable{
         try {
             ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
             while((p = (Packet) in.readObject()) != null){
+            	System.out.println(p+"\n");
                 bque.put(p);
             }
         } catch (IOException ex) {

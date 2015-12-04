@@ -29,6 +29,7 @@ public class Server {
 	private BlockingQueue<Packet> bque;
 	private UserRegister userReg;
 	private Thread userRegThread;
+	private int unUsedRoom;
 	
 	public Server(int port) throws IOException {
 		serverSock = new ServerSocket(port);
@@ -37,6 +38,7 @@ public class Server {
 		bque = (BlockingQueue<Packet>) new LinkedBlockingQueue();
 		userReg = new UserRegister(serverSock, mapUser, bque);
 		userRegThread = new Thread(userReg);
+		unUsedRoom = 1;
 	}
 	
 	public void start() {
@@ -57,8 +59,8 @@ public class Server {
 						user.getOutput().writeObject(p);
 						break;
 					case Packet.CREATE_ROOM :
-						System.out.println("Create Room : "+ p.getRoom());
-						createRoom(p.getRoom(), p.getUserName());
+						System.out.println("Create Room : ");
+						createRoom(unUsedRoom++, p.getUserName());
 						break;
 					case Packet.JOIN_ROOM :
 						System.out.println("JOIN ROOM : " + p.getUserName() + " to Room " + p.getRoom());
@@ -120,6 +122,7 @@ public class Server {
 			// Send broadcast to every User
 			Packet response = new Packet(Packet.CREATE_ROOM, userName);
 			response.setRoom(noRoom);
+			response.getArrayString().add(""+noRoom);
 			for(Map.Entry<String, User> entry : mapUser.entrySet()) {
 				User us = entry.getValue();
 				if(!us.getIsActive())
@@ -219,7 +222,6 @@ public class Server {
 				specList.add(room.getSpectator().get(i).getName());
 			response.setArrayString(userList);
 			response.setArrayString2(specList);
-			response.getArrayString().add(userName);
 			response.setMessage("Watch succes");
 			for(User us : room.getSpectator()) if(us.getIsActive()){
 				try {
@@ -270,20 +272,8 @@ public class Server {
 			return;
 		}
 		Room room = mapRoom.get(noRoom);
-		// Check if request is come from user that create room
-		if(!room.getCreatedBy().getName().equals(user.getName())) {
-			Packet packet = new Packet(Packet.START_GAME, userName);
-			packet.setRoom(-1);
-			try {
-				user.getOutput().writeObject(packet);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return;
-		}
 		// Check if User >= 3
-		if(room.getUser().size() < 3) {
+		if(room.getUser().size() < 2) {
 			Packet packet = new Packet(Packet.START_GAME, userName);
 			packet.setRoom(-1);
 			try {
@@ -313,6 +303,18 @@ public class Server {
 				e.printStackTrace();
 			}
 		}
+		room.setTurn(-1);
+		int turn = room.nextTurn();
+		User nowTurn = room.getUser().get(turn);
+		response = new Packet(Packet.PUT_PAWN, nowTurn.getName());
+		response.setRoom(room.getNoRoom());
+		try {
+			nowTurn.getOutput().writeObject(response);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	void putPawn(int noRoom, String userName, int x, int y) {
 		// Check if user is valid
@@ -333,6 +335,8 @@ public class Server {
 		}
 		Room room = mapRoom.get(noRoom);
 		int noTurn = user.getNoTurn();
+		if(noTurn != room.getTurn())
+			return;
 		if(room.putPawn(noTurn, x, y)) {
 			// Sent to all user in room to notify the winner
 			Packet response = new Packet(Packet.FINISH, userName);
@@ -372,7 +376,7 @@ public class Server {
 			for(User us : room.getUser()) if(us.getIsActive()){
 				try {
 					response.setUserName(us.getName());
-					user.getOutput().writeObject(response);
+					us.getOutput().writeObject(response);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -381,7 +385,7 @@ public class Server {
 			for(User us : room.getSpectator()) if(us.getIsActive()){
 				try {
 					response.setUserName(us.getName());
-					user.getOutput().writeObject(response);
+					us.getOutput().writeObject(response);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -497,6 +501,19 @@ public class Server {
 					try {
 						response.setUserName(userName);
 						us.getOutput().writeObject(response);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				int before = room.getTurn()-1;
+				room.setTurn(before-1);
+				if(room.nextTurn() != before) {
+					User nextTurn = room.getUser().get(room.getTurn());
+					Packet pack = new Packet(Packet.PUT_PAWN, nextTurn.getName());
+					pack.setRoom(room.getNoRoom());
+					try {
+						nextTurn.getOutput().writeObject(pack);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

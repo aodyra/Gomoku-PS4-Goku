@@ -158,11 +158,6 @@ public class Room implements Serializable {
 					return true;
 			}
 		}
-		this._turn++;
-		this._turn %= _user.size();
-		while(!_user.get(this._turn).getIsActive()) {
-			this._turn = (this._turn + 1) % _user.size();
-		}
 		return false;
 	}
 	public boolean getStarted() {
