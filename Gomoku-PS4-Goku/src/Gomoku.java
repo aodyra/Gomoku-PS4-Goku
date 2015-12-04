@@ -1,6 +1,8 @@
 
+import java.awt.Button;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JPanel;
 
 /*
@@ -15,6 +17,7 @@ import javax.swing.JPanel;
  */
 public class Gomoku extends javax.swing.JFrame {
 
+    private HashMap<Integer,ArrayList<ChangingButton>> buttons;
     private ArrayList<String> chats;
     private int dim=20;
     private int matrix[][] = new int[dim][dim];
@@ -23,6 +26,11 @@ public class Gomoku extends javax.swing.JFrame {
      */
     public Gomoku() {
         initComponents();
+        buttons = new HashMap<Integer,ArrayList<ChangingButton>>();
+        for(int i = 0; i < dim; i++){
+            ArrayList<ChangingButton> temp = new ArrayList<ChangingButton>();
+            buttons.put(new Integer(i),temp);
+        }
         createGridMatrix();
         chats = new ArrayList<String>();
     }
@@ -48,11 +56,11 @@ public class Gomoku extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         lobby = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTextPane4 = new javax.swing.JTextPane();
         button1 = new java.awt.Button();
         button2 = new java.awt.Button();
         button3 = new java.awt.Button();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jPanel2 = new javax.swing.JPanel();
         waitingroom = new javax.swing.JPanel();
         label1 = new java.awt.Label();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -114,13 +122,15 @@ public class Gomoku extends javax.swing.JFrame {
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jScrollPane4.setViewportView(jTextPane4);
-
         button1.setLabel("Create Room");
 
         button2.setLabel("Watch");
 
         button3.setLabel("Join");
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setLayout(new java.awt.GridLayout(0, 1));
+        jScrollPane6.setViewportView(jPanel2);
 
         javax.swing.GroupLayout lobbyLayout = new javax.swing.GroupLayout(lobby);
         lobby.setLayout(lobbyLayout);
@@ -128,25 +138,29 @@ public class Gomoku extends javax.swing.JFrame {
             lobbyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(lobbyLayout.createSequentialGroup()
                 .addGap(91, 91, 91)
-                .addGroup(lobbyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(lobbyLayout.createSequentialGroup()
-                        .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43)
-                        .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
-                        .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43)
+                .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(lobbyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lobbyLayout.createSequentialGroup()
+                    .addGap(91, 91, 91)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(122, Short.MAX_VALUE)))
         );
         lobbyLayout.setVerticalGroup(
             lobbyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(lobbyLayout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addGap(322, 322, 322)
                 .addGroup(lobbyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(lobbyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lobbyLayout.createSequentialGroup()
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 66, Short.MAX_VALUE)))
         );
 
         label1.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
@@ -162,29 +176,24 @@ public class Gomoku extends javax.swing.JFrame {
         waitingroomLayout.setHorizontalGroup(
             waitingroomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(waitingroomLayout.createSequentialGroup()
+                .addGap(132, 132, 132)
+                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(waitingroomLayout.createSequentialGroup()
                 .addGap(62, 62, 62)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(63, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, waitingroomLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(waitingroomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, waitingroomLayout.createSequentialGroup()
-                        .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(121, 121, 121))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, waitingroomLayout.createSequentialGroup()
-                        .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(216, 216, 216))))
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(waitingroomLayout.createSequentialGroup()
+                .addGap(217, 217, 217)
+                .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         waitingroomLayout.setVerticalGroup(
             waitingroomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(waitingroomLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(10, 10, 10)
                 .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(10, 10, 10)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25)
-                .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -221,7 +230,7 @@ public class Gomoku extends javax.swing.JFrame {
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(waitingroom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(22, Short.MAX_VALUE)))
+                    .addContainerGap(49, Short.MAX_VALUE)))
         );
 
         pack();
@@ -278,17 +287,17 @@ public class Gomoku extends javax.swing.JFrame {
     private java.awt.Button button4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane jTextPane2;
     private javax.swing.JTextPane jTextPane3;
-    private javax.swing.JTextPane jTextPane4;
     private javax.swing.JTextPane jTextPane5;
     private java.awt.Label label1;
     private javax.swing.JPanel lobby;
@@ -301,13 +310,24 @@ public class Gomoku extends javax.swing.JFrame {
             ++indeksChat;
     }
     
+    private void setMatrix(String username, int x, int y){
+        int urutan = 2;
+        matrix[x][y] = urutan;
+        ;
+    }
+    
     private void createGridMatrix(){
         for(int i = 0; i < 20; i++){
             for(int j = 0; j < 20; j++){
                 ChangingButton button = new ChangingButton(i, j, matrix);
+                buttons.get(i).add(button);
                 jPanel1.add(button);
             }
         }
+        setMatrix("ok", 1, 1);
+        buttons.get(1).get(1).updateNameFromModel();
+        setMatrix("ok", 0, 0);
+        buttons.get(0).get(0).updateNameFromModel();
         lobby.setVisible(false);
         waitingroom.setVisible(false);
     }

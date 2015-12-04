@@ -34,7 +34,7 @@ public class ChangingButton extends java.awt.Button {
         updateNameFromModel();
     }
 
-    private void updateNameFromModel() {
+    public void updateNameFromModel() {
         setLabel(String.valueOf(fModel[fX][fY]));
     }
 
