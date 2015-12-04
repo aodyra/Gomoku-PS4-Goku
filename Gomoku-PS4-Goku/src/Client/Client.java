@@ -114,7 +114,7 @@ public class Client {
                                         // TODO
                                         // set status game to PLAY
                                         // to ROOM
-                                        
+                                        content.deleteFromListRoom(p.getRoom());
                                         content.toRoom();
                                     }
                                     else{
@@ -131,11 +131,13 @@ public class Client {
                                             // Notify that this is your move
                                             // make client can to select position
                                             content.changeStatusBoard(true);
+                                            content.outTurn();
                                         }
                                         else {
                                             // TODO
                                             // set matrix p.getPosX() and p.getPosY() to p.getTurn();
                                             content.changeStatusBoard(false);
+                                            content.anotherTurn(p.getTurn());
                                             content.setMatrix(p.getTurn(), p.getPosX(), p.getPosY());
                                         }
                                     }

@@ -36,6 +36,14 @@ public class Content {
         urutan = -1;
     }
     
+    public void deleteFromListRoom(int noRoom){
+        int indeks = getListRoom().indexOf(String.valueOf(noRoom));
+        if ( indeks > -1) {
+            getListRoom().remove(indeks);
+            gomoku.updateListRoom(getListRoom());
+        }
+    }
+    
     public void addUserWatch(String username){
         getUserWatch().add(username);
         gomoku.updateUserWaitingWatch(userWatch);
@@ -98,9 +106,7 @@ public class Content {
      */
     public void setListRoom(ArrayList<String> listRoom) {
         this.listRoom = listRoom;
-        urutan = listRoom.indexOf(username);
         gomoku.updateListRoom(listRoom);
-        gomoku.setUrutanuser(urutan);
     }
 
     /**
@@ -139,6 +145,8 @@ public class Content {
      */
     public void setUserPlayer(ArrayList<String> userPlayer) throws IOException {
         this.userPlayer = userPlayer;
+        urutan = getUserPlayer().indexOf(username);
+        gomoku.setUrutanuser(urutan);
         gomoku.updateUserWaitingPlayer(userPlayer);
         gomoku.updateUserRoomPlayer(userPlayer);
     }
@@ -170,5 +178,14 @@ public class Content {
     
     public void changeStatusBoard(boolean status){
         gomoku.changeStatusplayer(status);
+    }
+    
+    public void outTurn(){
+        gomoku.outTurn();
+    }
+    
+    public void anotherTurn(int turn){
+        String anotherUser = getUserPlayer().get(turn);
+        gomoku.anotherTurn(anotherUser);
     }
 }
