@@ -108,8 +108,6 @@ public class Gomoku extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        room.setLayout(null);
-
         jScrollPane1.setViewportView(jTextPane1);
 
         jTabbedPane1.addTab("Player", jScrollPane1);
@@ -118,17 +116,9 @@ public class Gomoku extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Spectator", jScrollPane2);
 
-        room.add(jTabbedPane1);
-        jTabbedPane1.setBounds(439, 11, 122, 195);
-
         jScrollPane3.setViewportView(jTextPane3);
 
-        room.add(jScrollPane3);
-        jScrollPane3.setBounds(439, 230, 122, 160);
-
         jLabel1.setText("Chats:");
-        room.add(jLabel1);
-        jLabel1.setBounds(439, 210, 32, 14);
 
         jTextField1.setToolTipText("Chat disini...");
         jTextField1.setSelectionColor(new java.awt.Color(204, 153, 0));
@@ -137,32 +127,65 @@ public class Gomoku extends javax.swing.JFrame {
                 jTextField1ActionPerformed(evt);
             }
         });
-        room.add(jTextField1);
-        jTextField1.setBounds(439, 396, 122, 20);
 
         jPanel1.setBackground(new java.awt.Color(153, 255, 153));
         jPanel1.setLayout(new java.awt.GridLayout(20, 20, 3, 3));
-        room.add(jPanel1);
-        jPanel1.setBounds(10, 16, 400, 400);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 0, 0));
-        room.add(jLabel5);
-        jLabel5.setBounds(10, 422, 0, 0);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 0, 0));
         jLabel7.setText("Player Name : ");
-        room.add(jLabel7);
-        jLabel7.setBounds(179, 422, 99, 17);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 0, 0));
         jLabel10.setText("Room : ");
-        room.add(jLabel10);
-        jLabel10.setBounds(439, 422, 54, 17);
 
-        lobby.setLayout(null);
+        javax.swing.GroupLayout roomLayout = new javax.swing.GroupLayout(room);
+        room.setLayout(roomLayout);
+        roomLayout.setHorizontalGroup(
+            roomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roomLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(roomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(roomLayout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addGroup(roomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(roomLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(169, 169, 169)
+                        .addComponent(jLabel7)
+                        .addGap(161, 161, 161)
+                        .addComponent(jLabel10))))
+        );
+        roomLayout.setVerticalGroup(
+            roomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roomLayout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addGroup(roomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(roomLayout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(roomLayout.createSequentialGroup()
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(jLabel1)
+                        .addGap(6, 6, 6)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(6, 6, 6)
+                .addGroup(roomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel10)))
+        );
 
         button1.setLabel("Create Room");
         button1.addActionListener(new java.awt.event.ActionListener() {
@@ -170,8 +193,6 @@ public class Gomoku extends javax.swing.JFrame {
                 button1ActionPerformed(evt);
             }
         });
-        lobby.add(button1);
-        button1.setBounds(91, 322, 97, 41);
 
         button2.setLabel("Watch");
         button2.addActionListener(new java.awt.event.ActionListener() {
@@ -179,8 +200,6 @@ public class Gomoku extends javax.swing.JFrame {
                 button2ActionPerformed(evt);
             }
         });
-        lobby.add(button2);
-        button2.setBounds(367, 322, 97, 41);
 
         button3.setLabel("Join");
         button3.addActionListener(new java.awt.event.ActionListener() {
@@ -188,8 +207,6 @@ public class Gomoku extends javax.swing.JFrame {
                 button3ActionPerformed(evt);
             }
         });
-        lobby.add(button3);
-        button3.setBounds(231, 322, 97, 41);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new java.awt.GridLayout(0, 1));
@@ -199,26 +216,43 @@ public class Gomoku extends javax.swing.JFrame {
 
         jScrollPane6.setViewportView(jPanel2);
 
-        lobby.add(jScrollPane6);
-        jScrollPane6.setBounds(91, 0, 373, 102);
-
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 0, 0));
         jLabel8.setText("Player Name : ");
-        lobby.add(jLabel8);
-        jLabel8.setBounds(91, 120, 99, 17);
 
-        waitingroom.setLayout(null);
+        javax.swing.GroupLayout lobbyLayout = new javax.swing.GroupLayout(lobby);
+        lobby.setLayout(lobbyLayout);
+        lobbyLayout.setHorizontalGroup(
+            lobbyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lobbyLayout.createSequentialGroup()
+                .addGap(91, 91, 91)
+                .addGroup(lobbyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addGroup(lobbyLayout.createSequentialGroup()
+                        .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(43, 43, 43)
+                        .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))
+        );
+        lobbyLayout.setVerticalGroup(
+            lobbyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lobbyLayout.createSequentialGroup()
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel8)
+                .addGap(185, 185, 185)
+                .addGroup(lobbyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
 
         label1.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
         label1.setText("Waiting Room");
-        waitingroom.add(label1);
-        label1.setBounds(134, 0, 308, 66);
 
         jScrollPane5.setViewportView(jTextPane5);
-
-        waitingroom.add(jScrollPane5);
-        jScrollPane5.setBounds(67, 109, 436, 106);
 
         button4.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         button4.setLabel("START");
@@ -227,46 +261,78 @@ public class Gomoku extends javax.swing.JFrame {
                 button4ActionPerformed(evt);
             }
         });
-        waitingroom.add(button4);
-        button4.setBounds(185, 377, 128, 59);
 
         jScrollPane7.setViewportView(jTextPane6);
 
-        waitingroom.add(jScrollPane7);
-        jScrollPane7.setBounds(67, 238, 436, 106);
-
         jLabel3.setText("Watch:");
-        waitingroom.add(jLabel3);
-        jLabel3.setBounds(12, 269, 45, 24);
 
         jLabel4.setText("Player:");
-        waitingroom.add(jLabel4);
-        jLabel4.setBounds(17, 148, 45, 24);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 0, 0));
         jLabel6.setText("Room : ");
-        waitingroom.add(jLabel6);
-        jLabel6.setBounds(236, 76, 54, 17);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 0, 0));
         jLabel9.setText("Player Name : ");
-        waitingroom.add(jLabel9);
-        jLabel9.setBounds(67, 350, 99, 17);
 
-        home.setLayout(null);
+        javax.swing.GroupLayout waitingroomLayout = new javax.swing.GroupLayout(waitingroom);
+        waitingroom.setLayout(waitingroomLayout);
+        waitingroomLayout.setHorizontalGroup(
+            waitingroomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(waitingroomLayout.createSequentialGroup()
+                .addGap(134, 134, 134)
+                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(waitingroomLayout.createSequentialGroup()
+                .addGap(236, 236, 236)
+                .addComponent(jLabel6))
+            .addGroup(waitingroomLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(waitingroomLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(waitingroomLayout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addComponent(jLabel9))
+            .addGroup(waitingroomLayout.createSequentialGroup()
+                .addGap(185, 185, 185)
+                .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        waitingroomLayout.setVerticalGroup(
+            waitingroomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(waitingroomLayout.createSequentialGroup()
+                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jLabel6)
+                .addGap(16, 16, 16)
+                .addGroup(waitingroomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(waitingroomLayout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
+                .addGroup(waitingroomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(waitingroomLayout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addComponent(jLabel9)
+                .addGap(10, 10, 10)
+                .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         label2.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         label2.setForeground(new java.awt.Color(255, 0, 0));
         label2.setText("GOMOKU");
-        home.add(label2);
-        label2.setBounds(180, 53, 226, 66);
 
         label3.setFont(new java.awt.Font("Hobo Std", 2, 48)); // NOI18N
         label3.setText("Multiplayer");
-        home.add(label3);
-        label3.setBounds(167, 129, 247, 53);
 
         button5.setLabel("Play");
         button5.addActionListener(new java.awt.event.ActionListener() {
@@ -274,8 +340,6 @@ public class Gomoku extends javax.swing.JFrame {
                 button5ActionPerformed(evt);
             }
         });
-        home.add(button5);
-        button5.setBounds(208, 286, 173, 76);
 
         textField1.setText("Insert Your Name");
         textField1.addActionListener(new java.awt.event.ActionListener() {
@@ -283,12 +347,43 @@ public class Gomoku extends javax.swing.JFrame {
                 textField1ActionPerformed(evt);
             }
         });
-        home.add(textField1);
-        textField1.setBounds(167, 239, 247, 20);
 
         jLabel2.setForeground(new java.awt.Color(255, 0, 0));
-        home.add(jLabel2);
-        jLabel2.setBounds(247, 227, 0, 0);
+
+        javax.swing.GroupLayout homeLayout = new javax.swing.GroupLayout(home);
+        home.setLayout(homeLayout);
+        homeLayout.setHorizontalGroup(
+            homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homeLayout.createSequentialGroup()
+                .addGap(180, 180, 180)
+                .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(homeLayout.createSequentialGroup()
+                .addGap(167, 167, 167)
+                .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(homeLayout.createSequentialGroup()
+                .addGap(247, 247, 247)
+                .addComponent(jLabel2))
+            .addGroup(homeLayout.createSequentialGroup()
+                .addGap(167, 167, 167)
+                .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(homeLayout.createSequentialGroup()
+                .addGap(208, 208, 208)
+                .addComponent(button5, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        homeLayout.setVerticalGroup(
+            homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homeLayout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45)
+                .addComponent(jLabel2)
+                .addGap(12, 12, 12)
+                .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(button5, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 0, 0));
@@ -341,7 +436,7 @@ public class Gomoku extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(room, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)
+                .addComponent(room, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -369,27 +464,27 @@ public class Gomoku extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(room, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(438, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(lobby, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(438, Short.MAX_VALUE)))
+                    .addContainerGap(87, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(waitingroom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(438, Short.MAX_VALUE)))
+                    .addContainerGap(14, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(21, 21, 21)
                     .addComponent(home, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(428, Short.MAX_VALUE)))
+                    .addContainerGap(78, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(32, 32, 32)
                     .addComponent(popupwinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(64, Short.MAX_VALUE)))
+                    .addContainerGap(75, Short.MAX_VALUE)))
         );
 
         pack();
