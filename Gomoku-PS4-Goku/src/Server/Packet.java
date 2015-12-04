@@ -35,6 +35,7 @@ public class Packet implements Serializable {
 		this._room = -1;
 		this._userName = userName;
 		this._posX = this._posY = -1;
+		this._turn = -1;
 		this._message = "";
 		this._arrayString = new ArrayList<String>();
 		this._arrayString2 = new ArrayList<String>(); 
@@ -139,5 +140,18 @@ public class Packet implements Serializable {
 	}
 	public void setArrayString2(ArrayList< String > arrayString2) {
 		this._arrayString2 = arrayString2;
+	}
+	@Override
+	public String toString() {
+		String ret =
+				"Type : " + _type +
+				"\n Name : " + _userName +
+				"\n Room : " + _room + 
+				"\n pos : (" + _posX + ", " + _posY + ")" +
+				"\n turn : " + _turn +
+				"\n message : " + _message + 
+				"\n ArString1 : " + _arrayString + 
+				"\n ArString2 : " + _arrayString2 + "\n\n";
+		return ret;
 	}
 }

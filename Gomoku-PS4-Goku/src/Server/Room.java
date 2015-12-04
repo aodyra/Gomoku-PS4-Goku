@@ -88,6 +88,12 @@ public class Room implements Serializable {
 	public void setTurn(int _turn) {
 		this._turn = _turn;
 	}
+	public int nextTurn() {
+		this._turn = (this._turn + 1) % _user.size();
+		while(!_user.get(this._turn).getIsActive()) 
+			this._turn = (this._turn + 1) % _user.size(); 
+		return this._turn;
+	}
 	/**
 	 * @return the _spectator
 	 */
@@ -116,7 +122,6 @@ public class Room implements Serializable {
 	public int getNoRoom() {
 		return _noRoom;
 	}
-
 	public void setNoRoom(int noRoom) {
 		this._noRoom = noRoom;
 	}
@@ -163,7 +168,7 @@ public class Room implements Serializable {
 	public boolean getStarted() {
 		return this._started;
 	}
-	public void setStarted() {
-		this._started = true;
+	public void setStarted(boolean start) {
+		this._started = start;
 	}
 }

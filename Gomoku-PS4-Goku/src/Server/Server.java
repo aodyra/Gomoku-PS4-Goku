@@ -105,7 +105,7 @@ public class Server {
 		// Check whether this room exists or not
 		if(mapRoom.containsKey(noRoom)) {
 			// send response to that user
-			Packet response = new Packet(Packet.JOIN_ROOM, userName);
+			Packet response = new Packet(Packet.CREATE_ROOM, userName);
 			response.setRoom(-1);
 			try {
 				user.getOutput().writeObject(response);
@@ -122,6 +122,8 @@ public class Server {
 			response.setRoom(noRoom);
 			for(Map.Entry<String, User> entry : mapUser.entrySet()) {
 				User us = entry.getValue();
+				if(!us.getIsActive())
+					continue;
 				response.setUserName(us.getName());
 				try {
 					us.getOutput().writeObject(response);
@@ -148,8 +150,10 @@ public class Server {
 		}
 	}
 	public void joinRoom(int noRoom, String userName) {
-		if(!mapUser.containsKey(userName))
+		// Check if User exists
+		if(!mapUser.containsKey(userName)) {
 			return;
+		}
 		User user = mapUser.get(userName);
 		if(mapRoom.containsKey(noRoom)) {
 			Room room = mapRoom.get(noRoom);
@@ -165,7 +169,6 @@ public class Server {
 				specList.add(room.getSpectator().get(i).getName());
 			response.setArrayString(userList);
 			response.setArrayString2(specList);
-			response.getArrayString().add(userName);
 			response.setMessage("Join succes!");
 			for(User us : room.getUser()) if(us.getIsActive()){
 				try {
@@ -198,6 +201,7 @@ public class Server {
 		}
 	}
 	public void watchRoom(int noRoom, String userName) {
+		// Check if user exits
 		if(!mapUser.containsKey(userName))
 			return;
 		User user = mapUser.get(userName);
@@ -290,13 +294,17 @@ public class Server {
 			}
 			return;
 		}
-		room.setStarted();
+		if(room.getStarted())
+			return;
+		room.setStarted(true);
 		// Broadcast to all user that game has been started
 		Packet response = new Packet(Packet.START_GAME, userName);
 		response.setRoom(noRoom);
 		response.setTurn(0);
 		for(Map.Entry<String, User> entry: mapUser.entrySet()) {
 			User us = entry.getValue();
+			if(!us.getIsActive())
+				continue;
 			try {
 				response.setUserName(us.getName());
 				us.getOutput().writeObject(response);
@@ -326,6 +334,7 @@ public class Server {
 		Room room = mapRoom.get(noRoom);
 		int noTurn = user.getNoTurn();
 		if(room.putPawn(noTurn, x, y)) {
+			// Sent to all user in room to notify the winner
 			Packet response = new Packet(Packet.FINISH, userName);
 			response.setRoom(noRoom);
 			response.setTurn(noTurn);
@@ -354,11 +363,12 @@ public class Server {
 			mapRoom.remove(noRoom);
 		}
 		else {
+			// Send to user in room to update their board
 			Packet response = new Packet(Packet.PUT_PAWN, userName);
 			response.setRoom(noRoom);
 			response.setPosX(x);
 			response.setPosY(y);
-			response.setTurn(room.getTurn());
+			response.setTurn(noTurn);
 			for(User us : room.getUser()) if(us.getIsActive()){
 				try {
 					response.setUserName(us.getName());
@@ -376,6 +386,18 @@ public class Server {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
+			
+			// select user that can move next
+			noTurn = room.nextTurn();
+			User nextUser = room.getUser().get(noTurn);
+			response = new Packet(Packet.PUT_PAWN, nextUser.getName());
+			response.setRoom(noRoom);
+			try {
+				nextUser.getOutput().writeObject(response);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
