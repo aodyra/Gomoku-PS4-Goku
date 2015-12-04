@@ -176,6 +176,7 @@ public class Client {
                             if(p.getUserName().equals(content.getUsername()) && p.getRoom() >= 0){
                                 // notify that the winner is player in turn p.getTurn();
                                 // then back to lobby
+                                content.winner(p.getTurn());
                             }
                     }
                 }

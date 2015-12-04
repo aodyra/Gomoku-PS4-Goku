@@ -195,4 +195,9 @@ public class Content {
     public void setLabelRoom(){
         gomoku.setLabelRoom();
     }
+    
+    public void winner(int urut){
+        String nameuser = getUserPlayer().get(urut);
+        gomoku.winner(nameuser);
+    }
 }
