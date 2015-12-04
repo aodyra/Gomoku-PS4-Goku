@@ -50,6 +50,7 @@ public class Client {
                             if(p.getRoom() == 1) {
                             	content.setUsername(p.getUserName());
                                 content.setListRoom(p.getArrayString());
+                                content.setLabelName();
                                 content.toLobby();
                             }
                             else  {
@@ -83,6 +84,7 @@ public class Client {
                                         content.setNoroom(p.getRoom());
                                         content.setUserPlayer(p.getArrayString());
                                         content.setUserWatch(p.getArrayString2());
+                                        content.setLabelRoom();
                                         content.toWaitingRoom();
                                     }
                                     else {
@@ -137,7 +139,7 @@ public class Client {
                                             // TODO
                                             // set matrix p.getPosX() and p.getPosY() to p.getTurn();
                                             content.changeStatusBoard(false);
-                                            content.anotherTurn(p.getTurn());
+                                            content.anotherTurn();
                                             content.setMatrix(p.getTurn(), p.getPosX(), p.getPosY());
                                         }
                                     }

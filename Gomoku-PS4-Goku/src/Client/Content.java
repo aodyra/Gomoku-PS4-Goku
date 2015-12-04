@@ -184,8 +184,15 @@ public class Content {
         gomoku.outTurn();
     }
     
-    public void anotherTurn(int turn){
-        String anotherUser = getUserPlayer().get(turn);
-        gomoku.anotherTurn(anotherUser);
+    public void anotherTurn(){
+        gomoku.anotherTurn();
+    }
+    
+    public void setLabelName(){
+        gomoku.setLabelName();
+    }
+    
+    public void setLabelRoom(){
+        gomoku.setLabelRoom();
     }
 }
