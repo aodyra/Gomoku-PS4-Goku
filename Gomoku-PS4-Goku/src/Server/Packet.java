@@ -1,6 +1,7 @@
 package Server;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * 
@@ -19,11 +20,15 @@ public class Packet implements Serializable {
 	public static final int PUT_PAWN = 5;
 	public static final int SEND_CHAT = 6;
 	public static final int USER_DISCONNECT = 7;
+	public static final int FINISH = 8;
 	private int _type;
 	private int _room;
 	private String _userName;
 	private int _posX, _posY;
 	private String _message;
+	private int _turn;
+	private ArrayList< String > _arrayString;
+	private ArrayList< String > _arrayString2;
 
 	public Packet(int type, String userName) {
 		this._type = type;
@@ -31,7 +36,8 @@ public class Packet implements Serializable {
 		this._userName = userName;
 		this._posX = this._posY = -1;
 		this._message = "";
-
+		this._arrayString = new ArrayList<String>();
+		this._arrayString2 = new ArrayList<String>(); 
 	}
 	/**
 	 * @return the _type
@@ -115,5 +121,23 @@ public class Packet implements Serializable {
 	 */
 	public void setMessage(String _message) {
 		this._message = _message;
+	}
+	public int getTurn() {
+		return _turn;
+	}
+	public void setTurn(int _turn) {
+		this._turn = _turn;
+	}
+	public ArrayList<String > getArrayString() {
+		return this._arrayString;
+	}
+	public void setArrayString(ArrayList< String > arrayString) {
+		this._arrayString = arrayString;
+	}
+	public ArrayList<String > getArrayString2() {
+		return this._arrayString2;
+	}
+	public void setArrayString2(ArrayList< String > arrayString2) {
+		this._arrayString2 = arrayString2;
 	}
 }

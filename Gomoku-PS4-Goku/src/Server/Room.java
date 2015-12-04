@@ -22,7 +22,7 @@ public class Room implements Serializable {
     private int _turn;
     private ArrayList< User > _spectator;
     private ArrayList< String > _chat;
-    private boolean _started;  
+    private boolean _started; 
     /**
      * Constructor
      */
@@ -133,7 +133,9 @@ public class Room implements Serializable {
 		spect.setNoTurn(-1);
 		_spectator.add(spect);
 	}
-	public boolean putPawn(int noTurn, int x, int y) { 
+	public boolean putPawn(int noTurn, int x, int y) {
+		if(this._turn != noTurn)
+			return false;
 		if(x <20 && x >= 0 && y < 20 && y >= 0 && this._board[x][y] == -1) {
 			for(int i = 0; i<4; i++) {
 				int x1, y1, x2, y2;
@@ -150,6 +152,11 @@ public class Room implements Serializable {
 				if(dist > 5)
 					return true;
 			}
+		}
+		this._turn++;
+		this._turn %= _user.size();
+		while(!_user.get(this._turn).getIsActive()) {
+			this._turn = (this._turn + 1) % _user.size();
 		}
 		return false;
 	}

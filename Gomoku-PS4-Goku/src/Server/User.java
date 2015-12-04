@@ -32,7 +32,7 @@ public class User implements Serializable {
 		this._noTurn = -1;
 		this.in = in;
 		this.out = new ObjectOutputStream(sock.getOutputStream());
-		this._receiver = new UserReceiver(bque, in);
+		this._receiver = new UserReceiver(_name, bque, in);
 		thread = new Thread(this._receiver);
 		thread.start();
 	}

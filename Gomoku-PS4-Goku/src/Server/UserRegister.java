@@ -21,20 +21,22 @@ public class UserRegister implements Runnable {
 	}
 	@Override
 	public void run() {
-		Socket clientSock;
+		System.err.println("UserRegister started");
+		Socket clientSock = null;
 		try {
 			while((clientSock = sock.accept()) != null) {
 				ObjectInputStream in = new ObjectInputStream(clientSock.getInputStream());
 				Packet packet = (Packet)in.readObject(); 
 				String name = packet.getUserName();
+				System.err.println(name + " Connecting..");
 				if(userMap.containsKey(name)) {
 					packet.setRoom(0);
 					bque.put(packet);
 				}
 				else {
+					userMap.put(name, new User(name, clientSock, in, bque));
 					packet.setRoom(1);
 					bque.put(packet);
-					userMap.put(name, new User(name, clientSock, in, bque));
 				}
 			}
 		} catch (IOException e) {
